@@ -20,6 +20,9 @@ fastapi
 uvicorn
 langchain_google_genai
 fpdf
+pandas
+plotly
+openpyxl
 # langserve
 # duckdb
 # pandas
