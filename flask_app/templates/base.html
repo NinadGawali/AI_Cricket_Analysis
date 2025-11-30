@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Analytics Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Placeholder for icons -->
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">🏏 CricketHub</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/chat">NLP to SQL Agent</a></li>
+            <li><a href="/player-analysis">Player Analysis 📊</a></li>
+            <li><a href="/match-predictor">Match Predictor 🔮</a></li>
+            <li><a href="/analytics">Analytics</a></li>
+            <li><a href="/query-runner">Query Runner</a></li>
+            <li><a href="/schema">Schema</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>🏏 Cricket Analytics Hub | Powered by Gemini 2.0 Flash & Flask</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

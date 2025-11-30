@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Unlock Cricket Insights with AI Agents</h1>
+        <p>Multiple AI agents to analyze cricket data - from natural language queries to dream team building and match predictions.</p>
+        <div class="cta-buttons">
+            <a href="/chat" class="btn btn-primary">NLP to SQL Agent 🤖</a>
+            <a href="/player-analysis" class="btn btn-primary">Player Analysis 📊</a>
+            <a href="/analytics" class="btn btn-secondary">View Analytics 📈</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <!-- You can add an illustration here -->
+        <div class="floating-card">
+            <span>🏆 AI Agents</span>
+            <strong>3 Agents</strong>
+        </div>
+        <div class="floating-card" style="top: 60%; left: -20px;">
+            <span>⚡ Data Points</span>
+            <strong>100K+</strong>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <h3>🤖 NLP to SQL Agent</h3>
+        <p>Converts natural language questions into SQL queries instantly. Ask anything about cricket data in plain English.</p>
+        <a href="/chat" class="btn btn-small">Try Agent →</a>
+    </div>
+    <div class="feature-card">
+        <h3>📊 Player Analysis</h3>
+        <p>Compare players, analyze head-to-head battles, and explore venue statistics with deep insights.</p>
+        <a href="/player-analysis" class="btn btn-small">Analyze Players →</a>
+    </div>
+    <div class="feature-card">
+        <h3>🔮 Match Predictor</h3>
+        <p>Predicts match outcomes using historical data, team form, venue stats, and head-to-head records.</p>
+        <a href="/match-predictor" class="btn btn-small">Predict Match →</a>
+    </div>
+    <div class="feature-card">
+        <h3>📊 Visual Analytics</h3>
+        <p>Interactive charts for matches, players, venues, and performance trends with real-time data.</p>
+        <a href="/analytics" class="btn btn-small">View Charts →</a>
+    </div>
+    <div class="feature-card">
+        <h3>🔍 Query Runner</h3>
+        <p>Build custom SQL queries visually without writing code. Filter, sort, and explore data easily.</p>
+        <a href="/query-runner" class="btn btn-small">Run Queries →</a>
+    </div>
+    <div class="feature-card">
+        <h3>🗄️ Database Schema</h3>
+        <p>Explore the complete database structure with all tables, columns, and data relationships.</p>
+        <a href="/schema" class="btn btn-small">View Schema →</a>
+    </div>
+</section>
+{% endblock %}

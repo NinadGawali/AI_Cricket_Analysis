@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="analytics-container">
+    <header class="page-header">
+        <h1>🏏 Advanced Player Analysis</h1>
+        <p>Deep dive into player performance, head-to-head battles, and venue stats.</p>
+    </header>
+
+    <div class="analysis-tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'comparison')">Player Comparison</button>
+        <button class="tab-btn" onclick="openTab(event, 'h2h')">Batter vs Bowler</button>
+        <button class="tab-btn" onclick="openTab(event, 'exploration')">Player Exploration</button>
+    </div>
+
+    <!-- Tab 1: Player Comparison -->
+    <div id="comparison" class="tab-content" style="display: block;">
+        <div class="input-group">
+            <input type="text" id="p1-input" placeholder="Player 1 Name (e.g. Virat Kohli)">
+            <input type="text" id="p2-input" placeholder="Player 2 Name (e.g. Rohit Sharma)">
+            <button class="btn btn-primary" onclick="comparePlayers()">Compare</button>
+        </div>
+        <div id="comparison-results" class="results-area"></div>
+    </div>
+
+    <!-- Tab 2: Batter vs Bowler -->
+    <div id="h2h" class="tab-content">
+        <div class="input-group">
+            <input type="text" id="batter-input" placeholder="Batter Name">
+            <input type="text" id="bowler-input" placeholder="Bowler Name">
+            <button class="btn btn-primary" onclick="analyzeH2H()">Analyze Head-to-Head</button>
+        </div>
+        <div id="h2h-results" class="results-area"></div>
+    </div>
+
+    <!-- Tab 3: Player Exploration -->
+    <div id="exploration" class="tab-content">
+        <div class="input-group">
+            <input type="text" id="explore-player-input" placeholder="Player Name">
+            <select id="explore-type">
+                <option value="venue">Venue Stats</option>
+                <option value="spin_pace">Spin vs Pace Analysis</option>
+            </select>
+            <button class="btn btn-primary" onclick="explorePlayer()">Explore</button>
+        </div>
+        <div id="exploration-results" class="results-area"></div>
+    </div>
+</div>
+
+<script>
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+async function comparePlayers() {
+    const p1 = document.getElementById('p1-input').value;
+    const p2 = document.getElementById('p2-input').value;
+    const resultsDiv = document.getElementById('comparison-results');
+    
+    resultsDiv.innerHTML = '<div class="loader"></div>';
+    
+    try {
+        const response = await fetch(`/api/player-comparison?p1=${p1}&p2=${p2}`);
+        const data = await response.json();
+        
+        if (data.error) {
+            resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
+            return;
+        }
+        
+        let html = '<h3>Batting Comparison</h3><table><tr><th>Player</th><th>Runs</th><th>Avg</th><th>SR</th></tr>';
+        data.batting.forEach(p => {
+            html += `<tr><td>${p.player}</td><td>${p.runs}</td><td>${p.average}</td><td>${p.strike_rate}</td></tr>`;
+        });
+        html += '</table>';
+        
+        if (data.bowling.length > 0) {
+            html += '<h3>Bowling Comparison</h3><table><tr><th>Player</th><th>Wickets</th><th>Econ</th></tr>';
+            data.bowling.forEach(p => {
+                html += `<tr><td>${p.player}</td><td>${p.wickets}</td><td>${p.economy}</td></tr>`;
+            });
+            html += '</table>';
+        }
+        
+        resultsDiv.innerHTML = html;
+    } catch (e) {
+        resultsDiv.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+    }
+}
+
+async function analyzeH2H() {
+    const batter = document.getElementById('batter-input').value;
+    const bowler = document.getElementById('bowler-input').value;
+    const resultsDiv = document.getElementById('h2h-results');
+    
+    resultsDiv.innerHTML = '<div class="loader"></div>';
+    
+    try {
+        const response = await fetch(`/api/batter-vs-bowler?batter=${batter}&bowler=${bowler}`);
+        const data = await response.json();
+        
+        if (data.error) {
+            resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
+            return;
+        }
+        
+        if (!data.balls_faced) {
+            resultsDiv.innerHTML = `<p>No data found for ${batter} vs ${bowler}</p>`;
+            return;
+        }
+        
+        resultsDiv.innerHTML = `
+            <div class="stat-card">
+                <h3>${batter} vs ${bowler}</h3>
+                <p><strong>Runs:</strong> ${data.runs_scored}</p>
+                <p><strong>Balls:</strong> ${data.balls_faced}</p>
+                <p><strong>Dismissals:</strong> ${data.dismissals}</p>
+                <p><strong>Strike Rate:</strong> ${((data.runs_scored / data.balls_faced) * 100).toFixed(2)}</p>
+                <p><strong>Fours:</strong> ${data.fours}</p>
+                <p><strong>Sixes:</strong> ${data.sixes}</p>
+            </div>
+        `;
+    } catch (e) {
+        resultsDiv.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+    }
+}
+
+async function explorePlayer() {
+    const player = document.getElementById('explore-player-input').value;
+    const type = document.getElementById('explore-type').value;
+    const resultsDiv = document.getElementById('exploration-results');
+    
+    resultsDiv.innerHTML = '<div class="loader"></div>';
+    
+    try {
+        if (type === 'venue') {
+            const response = await fetch(`/api/player-venue?player=${player}`);
+            const data = await response.json();
+            
+            if (data.error) {
+                resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                return;
+            }
+            
+            let html = `<h3>${player} - Venue Stats</h3><table><tr><th>Venue</th><th>Runs</th><th>Balls</th><th>SR</th></tr>`;
+            data.forEach(row => {
+                html += `<tr><td>${row.venue}</td><td>${row.runs}</td><td>${row.balls}</td><td>${row.strike_rate}</td></tr>`;
+            });
+            html += '</table>';
+            resultsDiv.innerHTML = html;
+            
+        } else if (type === 'spin_pace') {
+            resultsDiv.innerHTML = '<div class="loader"></div><p>Analyzing bowler types with AI...</p>';
+            const response = await fetch(`/api/player-spin-pace?player=${player}`);
+            const data = await response.json();
+            
+            if (data.error) {
+                resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                return;
+            }
+            
+            resultsDiv.innerHTML = `
+                <h3>${player} vs Spin/Pace</h3>
+                <div class="comparison-grid">
+                    <div class="stat-card">
+                        <h4>Vs Spin 🌀</h4>
+                        <p>Runs: ${data.spin.runs}</p>
+                        <p>Balls: ${data.spin.balls}</p>
+                        <p>SR: ${data.spin.avg_sr}</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Vs Pace ⚡</h4>
+                        <p>Runs: ${data.pace.runs}</p>
+                        <p>Balls: ${data.pace.balls}</p>
+                        <p>SR: ${data.pace.avg_sr}</p>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (e) {
+        resultsDiv.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+    }
+}
+</script>
+
+<style>
+.analysis-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.tab-btn {
+    padding: 10px 20px;
+    background: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+.tab-btn.active {
+    background: #007bff;
+    color: white;
+}
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.input-group input, .input-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex: 1;
+}
+.results-area {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    min-height: 200px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.stat-card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}

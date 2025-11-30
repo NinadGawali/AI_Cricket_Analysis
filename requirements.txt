@@ -38,4 +38,4 @@ openpyxl
 # unstructured
 # pytube
 # numexpr
-# huggingface_hub
+# huggingface_hubflask

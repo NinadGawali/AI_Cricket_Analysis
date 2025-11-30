@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="agent-container">
+    <div class="agent-header">
+        <h1>🔮 Match Predictor Agent</h1>
+        <p>AI-powered match outcome predictor using historical data and advanced analytics</p>
+    </div>
+
+    <div class="predictor-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="team1">Team 1</label>
+                <input type="text" id="team1" placeholder="e.g., Mumbai Indians" class="form-input">
+            </div>
+            <div class="vs-divider">VS</div>
+            <div class="form-group">
+                <label for="team2">Team 2</label>
+                <input type="text" id="team2" placeholder="e.g., Chennai Super Kings" class="form-input">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="venue">Venue</label>
+            <input type="text" id="venue" placeholder="e.g., Wankhede Stadium" class="form-input">
+        </div>
+
+        <button class="btn btn-primary" onclick="predictMatch()">
+            🔮 Predict Match Outcome
+        </button>
+    </div>
+
+    <div id="prediction-result" class="agent-result">
+        <!-- Prediction will appear here -->
+    </div>
+
+    <div id="match-stats" class="stats-section" style="display: none;">
+        <h3>📊 Statistical Analysis</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>Head-to-Head Record</h4>
+                <div id="h2h-stats"></div>
+            </div>
+            <div class="stat-card">
+                <h4>Venue Statistics</h4>
+                <div id="venue-stats"></div>
+            </div>
+            <div class="stat-card">
+                <h4>Team 1 Recent Form</h4>
+                <div id="team1-form"></div>
+            </div>
+            <div class="stat-card">
+                <h4>Team 2 Recent Form</h4>
+                <div id="team2-form"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function predictMatch() {
+    const team1 = document.getElementById('team1').value.trim();
+    const team2 = document.getElementById('team2').value.trim();
+    const venue = document.getElementById('venue').value.trim();
+
+    if (!team1 || !team2) {
+        alert('Please enter both team names!');
+        return;
+    }
+
+    const resultDiv = document.getElementById('prediction-result');
+    const statsDiv = document.getElementById('match-stats');
+    
+    resultDiv.innerHTML = '<div class="streaming-container"><div class="status-message">🚀 Starting Match Predictor...</div><div id="stream-content" class="stream-content"></div></div>';
+    statsDiv.style.display = 'none';
+
+    try {
+        console.log('[Predictor] Sending payload:', { team1, team2, venue });
+        const response = await fetch('/api/match-predictor/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ team1, team2, venue })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let fullContent = '';
+        let statistics = null;
+
+        const streamContent = document.getElementById('stream-content');
+        const statusDiv = resultDiv.querySelector('.status-message');
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            const chunkStr = decoder.decode(value, { stream: true });
+            console.log('[Predictor] Chunk length:', chunkStr.length);
+            buffer += chunkStr;
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    console.log('[Predictor] SSE line:', line);
+                    const data = JSON.parse(line.slice(6));
+                    console.log('[Predictor] Event type:', data.type);
+
+                    if (data.type === 'status') {
+                        statusDiv.innerHTML = data.message;
+                        statusDiv.className = 'status-message pulsing';
+                    } else if (data.type === 'content') {
+                        statusDiv.style.display = 'none';
+                        fullContent += data.text;
+                        streamContent.innerHTML = formatPrediction(fullContent);
+                        streamContent.scrollTop = streamContent.scrollHeight;
+                    } else if (data.type === 'stats') {
+                        statistics = data.data;
+                    } else if (data.type === 'done') {
+                        statusDiv.innerHTML = '✅ Match Prediction Complete!';
+                        statusDiv.className = 'status-message success';
+                        setTimeout(() => statusDiv.style.display = 'none', 2000);
+                    } else if (data.type === 'error') {
+                        resultDiv.innerHTML = `<div class="error-message">❌ Error: ${data.message}</div>`;
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Wrap final content
+        resultDiv.innerHTML = `
+            <div class="prediction-analysis">
+                <div class="analysis-header">
+                    <h2>🎯 Match Prediction</h2>
+                    <div class="match-info">
+                        <span class="team-badge">${team1}</span>
+                        <span class="vs">VS</span>
+                        <span class="team-badge">${team2}</span>
+                        ${venue ? `<div class="venue-info">📍 ${venue}</div>` : ''}
+                    </div>
+                </div>
+                <div class="analysis-content">
+                    ${formatPrediction(fullContent)}
+                </div>
+            </div>
+        `;
+
+        // Display statistics
+        if (statistics) {
+            statsDiv.style.display = 'block';
+            
+            if (statistics.head_to_head && statistics.head_to_head.length > 0) {
+                const h2hHtml = statistics.head_to_head.map(match => `
+                    <div class="stat-row">
+                        <span class="match-date">${match.date || 'N/A'}</span>
+                        <span class="winner">${match.winner}</span>
+                        <span class="venue-small">${match.venue}</span>
+                    </div>
+                `).join('');
+                document.getElementById('h2h-stats').innerHTML = h2hHtml;
+            } else {
+                document.getElementById('h2h-stats').innerHTML = '<p>No head-to-head matches found</p>';
+            }
+
+            if (statistics.venue_stats && statistics.venue_stats.length > 0) {
+                const venueHtml = statistics.venue_stats.map(stat => `
+                    <div class="stat-row">
+                        <span class="team-name">${stat.winner}</span>
+                        <span class="wins-count">${stat.wins} wins</span>
+                    </div>
+                `).join('');
+                document.getElementById('venue-stats').innerHTML = venueHtml;
+            } else {
+                document.getElementById('venue-stats').innerHTML = '<p>Limited venue data</p>';
+            }
+
+            displayTeamForm('team1-form', statistics.team1_form, team1);
+            displayTeamForm('team2-form', statistics.team2_form, team2);
+        }
+
+    } catch (error) {
+        console.error('[Predictor] Error:', error);
+        resultDiv.innerHTML = `<div class="error-message">❌ Error: ${error.message}</div>`;
+    }
+}
+
+function displayTeamForm(elementId, formData, teamName) {
+    const element = document.getElementById(elementId);
+    if (formData && formData.length > 0) {
+        const formHtml = formData.map(match => `
+            <div class="stat-row">
+                <span class="match-date">${match.date || 'N/A'}</span>
+                <span class="${match.winner === teamName ? 'result-won' : 'result-lost'}">
+                    ${match.winner === teamName ? '✅ Won' : '❌ Lost'}
+                </span>
+            </div>
+        `).join('');
+        element.innerHTML = formHtml;
+    } else {
+        element.innerHTML = '<p>No recent matches found</p>';
+    }
+}
+
+function formatPrediction(text) {
+    return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.*?)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.*?)$/gm, '<h1>$1</h1>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+}
+</script>
+{% endblock %}
