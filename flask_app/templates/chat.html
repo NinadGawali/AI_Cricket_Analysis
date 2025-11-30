@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>🤖 NLP to SQL Agent</h2>
+        <p>Ask questions in natural language - I'll convert them to SQL and fetch results!</p>
+    </div>
+    
+    <div class="chat-history" id="chat-history">
+        <!-- Messages will appear here -->
+        <div class="message bot-message">
+            <div class="message-content">
+                Hello! I'm your NLP to SQL Agent. Ask me questions like "Who has the most runs?" or "Show me match winners in 2023" and I'll execute SQL queries to find the answers!
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" id="user-input" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()" id="send-btn">🚀</button>
+    </div>
+</div>
+{% endblock %}
