@@ -1,0 +1,41 @@
+# Git
+.git
+.gitignore
+
+# Elastic Beanstalk
+.ebextensions
+.elasticbeanstalk
+.ebignore
+
+# Python cache
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Old application files (not needed)
+app.py
+application.py
+agents/
+
+# Test files
+test_*.py
+*_test.py
+
+# Documentation
+*.md
+README*
