@@ -2,50 +2,193 @@
 
 {% block content %}
 <div class="analytics-header">
-    <h2>📈 Standard Analytics</h2>
-    <p>Explore key insights and performance metrics from the cricket database.</p>
+    <h2>Cricket Analytics Dashboard</h2>
+    <p>Explore comprehensive insights across ODI, T20 International, Test, and IPL cricket data.</p>
+    
+    <div class="format-tabs">
+        <button class="format-tab active" onclick="loadAllAnalytics()">All Formats</button>
+        <button class="format-tab" onclick="loadFormatStats('odi')">ODI</button>
+        <button class="format-tab" onclick="loadFormatStats('t20')">T20 Int</button>
+        <button class="format-tab" onclick="loadFormatStats('test')">Test</button>
+        <button class="format-tab" onclick="loadFormatStats('ipl')">IPL</button>
+    </div>
 </div>
 
-<div class="dashboard-grid">
-    <div class="chart-card">
-        <h3>🏆 Top 10 Teams by Wins</h3>
-        <div id="chart-wins"></div>
+<!-- All Formats Dashboard -->
+<div id="all-formats-dashboard">
+    <h3 class="section-title">Overview - All Formats Combined</h3>
+    <div class="dashboard-grid">
+        <div class="chart-card">
+            <h3>Top 10 Teams by Wins</h3>
+            <div id="chart-wins"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Matches by Format</h3>
+            <div id="chart-type"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Toss Decision Distribution</h3>
+            <div id="chart-toss"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Win Methods</h3>
+            <div id="chart-method"></div>
+        </div>
     </div>
-    <div class="chart-card">
-        <h3>⚡ Toss Decision</h3>
-        <div id="chart-toss"></div>
+
+    <h3 class="section-title">Top Performers</h3>
+    <div class="dashboard-grid">
+        <div class="chart-card">
+            <h3>Top Run Scorers (All Formats)</h3>
+            <div id="chart-scorers"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Top Wicket Takers (All Formats)</h3>
+            <div id="chart-wickets"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Most Player of Match Awards</h3>
+            <div id="chart-pom"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Top Fielders (Dismissals)</h3>
+            <div id="chart-fielders"></div>
+        </div>
     </div>
-    <div class="chart-card">
-        <h3>🎮 Matches by Type</h3>
-        <div id="chart-type"></div>
+
+    <h3 class="section-title">Format Analysis</h3>
+    <div class="dashboard-grid">
+        <div class="chart-card">
+            <h3>Average Runs per Match by Format</h3>
+            <div id="chart-avg-runs"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Super Over Matches by Format</h3>
+            <div id="chart-super-over"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Dismissal Types (IPL)</h3>
+            <div id="chart-dismissal"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Top Cities by Matches</h3>
+            <div id="chart-city"></div>
+        </div>
     </div>
-    <div class="chart-card">
-        <h3>🏏 Top Run Scorers</h3>
-        <div id="chart-scorers"></div>
+
+    <h3 class="section-title">IPL Insights</h3>
+    <div class="dashboard-grid">
+        <div class="chart-card full-width">
+            <h3>IPL Teams - Win Percentage</h3>
+            <div id="chart-ipl-teams"></div>
+        </div>
     </div>
-    <div class="chart-card full-width">
-        <h3>📅 Matches Over Seasons</h3>
-        <div id="chart-season"></div>
-    </div>
-    <div class="chart-card">
-        <h3>🎯 Win Methods</h3>
-        <div id="chart-method"></div>
-    </div>
-    <div class="chart-card">
-        <h3>🎳 Top Wicket Takers</h3>
-        <div id="chart-wickets"></div>
-    </div>
-    <div class="chart-card">
-        <h3>🌆 Matches by City</h3>
-        <div id="chart-city"></div>
+
+    <h3 class="section-title">Matches Over Time</h3>
+    <div class="dashboard-grid">
+        <div class="chart-card full-width">
+            <h3>Matches per Season (ODI + T20 Int)</h3>
+            <div id="chart-season"></div>
+        </div>
     </div>
 </div>
+
+<!-- Format Specific Dashboard -->
+<div id="format-dashboard" style="display: none;">
+    <h3 class="section-title" id="format-title">Format Statistics</h3>
+    <div class="dashboard-grid">
+        <div class="chart-card">
+            <h3>Top Run Scorers</h3>
+            <div id="format-chart-scorers"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Top Wicket Takers</h3>
+            <div id="format-chart-wickets"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Wins by Team</h3>
+            <div id="format-chart-wins"></div>
+        </div>
+        <div class="chart-card">
+            <h3>Top Venues</h3>
+            <div id="format-chart-venues"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+.analytics-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.format-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.format-tab {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #1565C0;
+    background: transparent;
+    color: #1565C0;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.format-tab:hover {
+    background: rgba(21, 101, 192, 0.1);
+}
+
+.format-tab.active {
+    background: #1565C0;
+    color: white;
+}
+
+.section-title {
+    color: #1565C0;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.chart-card h3 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.chart-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.chart-card > div {
+    min-height: 280px;
+}
+</style>
 
 <script>
-    // Load analytics data when page loads
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Analytics page loaded, fetching data...');
-        loadAnalytics();
+        loadAllAnalytics();
     });
 </script>
 {% endblock %}

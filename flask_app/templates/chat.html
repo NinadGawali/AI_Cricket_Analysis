@@ -3,22 +3,55 @@
 {% block content %}
 <div class="chat-container">
     <div class="chat-header">
-        <h2>🤖 NLP to SQL Agent</h2>
-        <p>Ask questions in natural language - I'll convert them to SQL and fetch results!</p>
+        <h2>Cricket AI - NLP to SQL Agent</h2>
+        <p>Ask questions in natural language across ODI, T20 International, Test, and IPL data</p>
+        <div class="format-badges">
+            <span class="badge">ODI</span>
+            <span class="badge">T20 Int</span>
+            <span class="badge">Test</span>
+            <span class="badge">IPL</span>
+        </div>
     </div>
     
     <div class="chat-history" id="chat-history">
         <!-- Messages will appear here -->
         <div class="message bot-message">
             <div class="message-content">
-                Hello! I'm your NLP to SQL Agent. Ask me questions like "Who has the most runs?" or "Show me match winners in 2023" and I'll execute SQL queries to find the answers!
+                Hello! I'm your Cricket AI Agent. I can query across all cricket formats - ODI, T20 International, Test matches, and IPL. 
+                <br><br>
+                <strong>Try asking:</strong>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>"Show all ODI matches where the chasing team won by wickets"</li>
+                    <li>"Find the bowler with the most wickets in Test cricket"</li>
+                    <li>"Show IPL matches where the toss winner chose to field but lost"</li>
+                    <li>"List players who have appeared in all formats"</li>
+                    <li>"Compare average runs per match across all four formats"</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <div class="chat-input-area">
-        <input type="text" id="user-input" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
-        <button onclick="sendMessage()" id="send-btn">🚀</button>
+        <input type="text" id="user-input" placeholder="Ask about ODI, T20, Test, or IPL cricket..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()" id="send-btn">Send</button>
     </div>
 </div>
+
+<style>
+.format-badges {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    justify-content: center;
+}
+
+.badge {
+    background: rgba(21, 101, 192, 0.15);
+    color: #1565C0;
+    padding: 0.3rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+</style>
 {% endblock %}

@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Copy application files
 COPY application_fixed.py .
-COPY cricket_matches.db .
+COPY all_formats_cricket.db .
 COPY .env .
 
 # Copy templates and static files

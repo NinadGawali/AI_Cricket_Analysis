@@ -3,57 +3,291 @@
 {% block content %}
 <section class="hero">
     <div class="hero-content">
-        <h1>Unlock Cricket Insights with AI Agents</h1>
-        <p>Multiple AI agents to analyze cricket data - from natural language queries to dream team building and match predictions.</p>
+        <h1>Cricket Analytics Platform</h1>
+        <p>AI-powered insights across ODI, T20 International, Test, and IPL cricket data with natural language queries and advanced analytics.</p>
+        <div class="format-badges">
+            <span class="badge">ODI</span>
+            <span class="badge">T20 Int</span>
+            <span class="badge">Test</span>
+            <span class="badge">IPL</span>
+        </div>
         <div class="cta-buttons">
-            <a href="/chat" class="btn btn-primary">NLP to SQL Agent 🤖</a>
-            <a href="/player-analysis" class="btn btn-primary">Player Analysis 📊</a>
-            <a href="/analytics" class="btn btn-secondary">View Analytics 📈</a>
+            <a href="/chat" class="btn btn-primary">Ask Cricket AI</a>
+            <a href="/player-analysis" class="btn btn-primary">Player Analysis</a>
+            <a href="/analytics" class="btn btn-secondary">View Analytics</a>
         </div>
     </div>
-    <div class="hero-image">
-        <!-- You can add an illustration here -->
-        <div class="floating-card">
-            <span>🏆 AI Agents</span>
-            <strong>3 Agents</strong>
+    <div class="hero-stats">
+        <div class="stat-card">
+            <span class="stat-number">8K+</span>
+            <span class="stat-label">Matches</span>
         </div>
-        <div class="floating-card" style="top: 60%; left: -20px;">
-            <span>⚡ Data Points</span>
-            <strong>100K+</strong>
+        <div class="stat-card">
+            <span class="stat-number">4.3M+</span>
+            <span class="stat-label">Ball-by-Ball Records</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">4</span>
+            <span class="stat-label">Cricket Formats</span>
         </div>
     </div>
 </section>
 
 <section class="features">
     <div class="feature-card">
-        <h3>🤖 NLP to SQL Agent</h3>
-        <p>Converts natural language questions into SQL queries instantly. Ask anything about cricket data in plain English.</p>
-        <a href="/chat" class="btn btn-small">Try Agent →</a>
+        <h3>NLP to SQL Agent</h3>
+        <p>Ask questions in natural language across ODI, T20, Test, and IPL data. The AI converts your queries to SQL automatically.</p>
+        <div class="example-queries">
+            <small>Try: "Top wicket takers in Test cricket" or "IPL matches where toss winner lost"</small>
+        </div>
+        <a href="/chat" class="btn btn-small">Try Agent</a>
     </div>
     <div class="feature-card">
-        <h3>📊 Player Analysis</h3>
-        <p>Compare players, analyze head-to-head battles, and explore venue statistics with deep insights.</p>
-        <a href="/player-analysis" class="btn btn-small">Analyze Players →</a>
+        <h3>Player Analysis</h3>
+        <p>Compare players across formats, analyze head-to-head battles between batters and bowlers, and explore venue statistics.</p>
+        <div class="example-queries">
+            <small>Compare Virat Kohli vs Rohit Sharma across all formats</small>
+        </div>
+        <a href="/player-analysis" class="btn btn-small">Analyze Players</a>
     </div>
     <div class="feature-card">
-        <h3>🔮 Match Predictor</h3>
-        <p>Predicts match outcomes using historical data, team form, venue stats, and head-to-head records.</p>
-        <a href="/match-predictor" class="btn btn-small">Predict Match →</a>
+        <h3>Match Predictor</h3>
+        <p>Predict match outcomes using historical data, team form, venue stats, and head-to-head records across formats.</p>
+        <a href="/match-predictor" class="btn btn-small">Predict Match</a>
     </div>
     <div class="feature-card">
-        <h3>📊 Visual Analytics</h3>
-        <p>Interactive charts for matches, players, venues, and performance trends with real-time data.</p>
-        <a href="/analytics" class="btn btn-small">View Charts →</a>
+        <h3>Visual Analytics</h3>
+        <p>Interactive charts for all formats - top scorers, wicket takers, team performance, and venue analysis.</p>
+        <a href="/analytics" class="btn btn-small">View Charts</a>
     </div>
     <div class="feature-card">
-        <h3>🔍 Query Runner</h3>
-        <p>Build custom SQL queries visually without writing code. Filter, sort, and explore data easily.</p>
-        <a href="/query-runner" class="btn btn-small">Run Queries →</a>
+        <h3>Query Runner</h3>
+        <p>Build custom queries visually. Filter data from 40+ tables across ODI, T20, Test, and IPL matches.</p>
+        <a href="/query-runner" class="btn btn-small">Run Queries</a>
     </div>
     <div class="feature-card">
-        <h3>🗄️ Database Schema</h3>
-        <p>Explore the complete database structure with all tables, columns, and data relationships.</p>
-        <a href="/schema" class="btn btn-small">View Schema →</a>
+        <h3>Database Schema</h3>
+        <p>Explore the complete database structure with all tables for matches, ball-by-ball data, players, and outcomes.</p>
+        <a href="/schema" class="btn btn-small">View Schema</a>
     </div>
 </section>
+
+<section class="sample-queries">
+    <h2>Sample Queries to Try</h2>
+    <div class="queries-grid">
+        <div class="query-card">
+            <strong>ODI</strong>
+            <p>Show all ODI matches where the chasing team won by wickets</p>
+        </div>
+        <div class="query-card">
+            <strong>Test</strong>
+            <p>List all Test matches that lasted more than four days</p>
+        </div>
+        <div class="query-card">
+            <strong>T20</strong>
+            <p>Get the top ten highest total run T20 matches</p>
+        </div>
+        <div class="query-card">
+            <strong>IPL</strong>
+            <p>Show IPL teams with the highest batting-first win percentage</p>
+        </div>
+        <div class="query-card">
+            <strong>Cross-Format</strong>
+            <p>List players who have appeared in all formats: IPL, T20, ODI, Test</p>
+        </div>
+        <div class="query-card">
+            <strong>Stats</strong>
+            <p>Compare average runs per match across all four formats</p>
+        </div>
+    </div>
+</section>
+
+<style>
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+    color: white;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    opacity: 0.95;
+}
+
+.format-badges {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.badge {
+    background: rgba(255,255,255,0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.15);
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.feature-card h3 {
+    color: #1565C0;
+    margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+    color: #555;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.example-queries {
+    background: #f5f5f5;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.example-queries small {
+    color: #666;
+    font-style: italic;
+}
+
+.sample-queries {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.sample-queries h2 {
+    text-align: center;
+    color: #1565C0;
+    margin-bottom: 1.5rem;
+}
+
+.queries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.query-card {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #1565C0;
+}
+
+.query-card strong {
+    color: #1565C0;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.query-card p {
+    color: #555;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: white;
+    color: #1565C0;
+}
+
+.btn-primary:hover {
+    background: #f0f0f0;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    background: #1565C0;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.btn-small:hover {
+    background: #0D47A1;
+}
+</style>
 {% endblock %}

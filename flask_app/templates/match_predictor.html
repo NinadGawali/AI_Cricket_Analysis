@@ -3,30 +3,30 @@
 {% block content %}
 <div class="agent-container">
     <div class="agent-header">
-        <h1>🔮 Match Predictor Agent</h1>
-        <p>AI-powered match outcome predictor using historical data and advanced analytics</p>
+        <h1>Match Predictor</h1>
+        <p>AI-powered match outcome predictor using historical data across ODI, T20, Test, and IPL</p>
     </div>
 
     <div class="predictor-form">
         <div class="form-row">
             <div class="form-group">
                 <label for="team1">Team 1</label>
-                <input type="text" id="team1" placeholder="e.g., Mumbai Indians" class="form-input">
+                <input type="text" id="team1" placeholder="e.g., India, Mumbai Indians" class="form-input">
             </div>
             <div class="vs-divider">VS</div>
             <div class="form-group">
                 <label for="team2">Team 2</label>
-                <input type="text" id="team2" placeholder="e.g., Chennai Super Kings" class="form-input">
+                <input type="text" id="team2" placeholder="e.g., Australia, Chennai Super Kings" class="form-input">
             </div>
         </div>
 
         <div class="form-group">
             <label for="venue">Venue</label>
-            <input type="text" id="venue" placeholder="e.g., Wankhede Stadium" class="form-input">
+            <input type="text" id="venue" placeholder="e.g., Wankhede Stadium, Eden Gardens" class="form-input">
         </div>
 
         <button class="btn btn-primary" onclick="predictMatch()">
-            🔮 Predict Match Outcome
+            Predict Match Outcome
         </button>
     </div>
 
@@ -35,7 +35,7 @@
     </div>
 
     <div id="match-stats" class="stats-section" style="display: none;">
-        <h3>📊 Statistical Analysis</h3>
+        <h3>Statistical Analysis</h3>
         <div class="stats-grid">
             <div class="stat-card">
                 <h4>Head-to-Head Record</h4>
@@ -71,7 +71,7 @@ async function predictMatch() {
     const resultDiv = document.getElementById('prediction-result');
     const statsDiv = document.getElementById('match-stats');
     
-    resultDiv.innerHTML = '<div class="streaming-container"><div class="status-message">🚀 Starting Match Predictor...</div><div id="stream-content" class="stream-content"></div></div>';
+    resultDiv.innerHTML = '<div class="streaming-container"><div class="status-message">Analyzing data across all formats...</div><div id="stream-content" class="stream-content"></div></div>';
     statsDiv.style.display = 'none';
 
     try {
