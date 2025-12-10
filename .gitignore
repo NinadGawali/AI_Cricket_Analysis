@@ -113,7 +113,7 @@ instance/
 
 # Windows
 Thumbs.db
-
+flask_app/all_formats_cricket.db
 # .mp4
 *.mp4
 # cricket_data
